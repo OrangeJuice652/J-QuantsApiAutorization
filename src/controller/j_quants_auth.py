@@ -31,11 +31,33 @@ class JQuantsApiIDTokenController():
         return self.id_token_fetcher_output.token
         # TODO: IDトークンが取得できなかった（response_code != RESPONSE_OK）のエラー処理
 
-@dataclass
-class TokenFetcherOutput():
+class BaseTokenFetcherOutput(ABC):
     response_code: str
     response_message: str
     token: str
+
+    def __init__(
+        self,
+        response,
+    ):
+        response_json = response.json()
+        self.response_code = response.status_code 
+        if self.response_code == RESPONSE_OK:
+            self.token = self.__get_token_from_json(response_json)
+
+    @abstractmethod
+    def __get_token_from_json(self, response_json):
+        pass
+
+class RefreshTokenFetchOutput(BaseTokenFetcherOutput):
+    def __get_token_from_json(response_json):
+        return response_json['refreshToken']
+
+
+class IDTokenFetchOutput(BaseTokenFetcherOutput):
+    def __get_token_from_json(response_json):
+        return response_json['idToken']
+
 
 from abc import ABC, abstractmethod
 import requests
@@ -77,11 +99,40 @@ class RefreshTokenFetcher(IRefreshTokenFetcher):
         )
         return TokenFetcherOutput(response)
 
+from typing import Optional
+
+class IIDTockenFetcher():
+    @abstractmethod
+    def __init__(
+        self,
+        refresh_token=None: Optional[str],
+    ):
+        pass
+
+    @abstractmethod
+    def fetch() -> TokenFetcherOutput:
+        pass
 
 
+ID_TOKEN_URL = '/token/auth_refresh'
 
+class IDTockenFetcher():
+    def __init__(
+        self,
+        refresh_token=None: Optional[str],
+    ):
+        self.refresh_token = refresh_token
 
-
+    def fetch() -> TokenFetcherOutput:
+        query_parameters = {
+            'refreshtoken': refresh_token,
+        }
+        response = requests.post(
+            JQUANTS_API_URI+ID_TOKEN_URL,
+            params=query_parameters,
+        )
+        return TokenFetcherOutput(response)
+        
 
 
 
