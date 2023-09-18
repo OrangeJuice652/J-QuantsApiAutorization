@@ -6,6 +6,9 @@ from usecase import RefreshTokenFetchOutput
 
 
 class IRefreshTokenFetcher(ABC):
+    mail_address: str
+    password: str
+
     @abstractmethod
     def __init__(
         self,
@@ -19,10 +22,13 @@ class IRefreshTokenFetcher(ABC):
         pass
 
 class RefreshTokenFetcher(IRefreshTokenFetcher):
+    mail_address: str
+    password: str
+
     def __init__(
         self,
-        mail_address: str,
-        password: str,
+        mail_address: str = '',
+        password: str = '',
     ):
         self.mail_address = mail_address
         self.password = password

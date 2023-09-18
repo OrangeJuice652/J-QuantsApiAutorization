@@ -1,3 +1,4 @@
+from typing import Any
 from usecase import (
   IRefreshTokenFetcher,
   IIDTokenFetcher,
@@ -18,6 +19,11 @@ class JQuantsApiIDTokenController():
 
       self.refresh_token_fetcher: IRefreshTokenFetcher = refresh_token_fetcher
       self.id_token_fetcher: IIDTokenFetcher = id_token_fetcher
+  
+  def __call__(self,  mail_address, password):
+     self.refresh_token_fetcher.mail_address = mail_address
+     self.refresh_token_fetcher.password = password
+     return self
 
   def get_id_token(self):
     if self.id_token_fetcher.refresh_token is None:
