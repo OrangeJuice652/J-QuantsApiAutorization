@@ -1,8 +1,8 @@
 from abc import ABC, abstractmethod
 import requests
 from typing import Optional
-import JQUANTS_API_URI, ID_TOKEN_URL
-from fetcher_output import IDTokenFetchOutput
+from constants import JQUANTS_API_URI, ID_TOKEN_URL
+from . import IDTokenFetchOutput
 
 class IIDTokenFetcher(ABC):
     @abstractmethod
@@ -24,7 +24,7 @@ class IDTokenFetcher():
     ):
         self.refresh_token = refresh_token
 
-    def fetch() -> IDTokenFetchOutput:
+    def fetch(self) -> IDTokenFetchOutput:
         query_parameters = {
             'refreshtoken': self.refresh_token,
         }
