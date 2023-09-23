@@ -1,30 +1,30 @@
 import requests, unittest
 from unittest.mock import patch, Mock
-from j_quants_auth.usecase import RefreshTokenFetcher, RefreshTokenFetchOutput
+from j_quants_auth.usecase import IDTokenFetcher, IDTokenFetchOutput
 from j_quants_auth.constants import RESPONSE_OK
 
-class TestRefreshTokenFetcher(unittest.TestCase):
+class TestIDTokenFetcher(unittest.TestCase):
     def setUp(self):
-        self.refresh_token_fetcher = RefreshTokenFetcher(
-            mail_address='test_address',
-            password='password'
+        self.id_token_fetcher = IDTokenFetcher(
+            'test_id_token',
         )
 
     def test_init(self):
-        """RefreshTokenFetcherの初期化テスト
+        """IDTokenFetcherの初期化テスト
         """
-
-        with self.subTest('アドレスの初期化'):
+        with self.subTest('リフレッシュトークンの初期化（引数指定なし）'):
+            no_refresh_token_id_token_fetcher = IDTokenFetcher()
             self.assertEqual(
-                self.refresh_token_fetcher.mail_address,
-                'test_address',
+                no_refresh_token_id_token_fetcher.refresh_token,
+                None,
+            )
+
+        with self.subTest('リフレッシュトークンの初期化（引数指定）'):
+            self.assertEqual(
+                self.id_token_fetcher.refresh_token,
+                'test_id_token',
             )
         
-        with self.subTest('パスワードの初期化'):
-            self.assertEqual(
-                self.refresh_token_fetcher.mail_address,
-                'password'
-            )
     
     def test_fetch_200(self):
         """fetch()のテスト(response_code == 200の場合)
@@ -32,8 +32,9 @@ class TestRefreshTokenFetcher(unittest.TestCase):
         with patch('requests.post') as mock:
             response = requests.models.Response()
             response.status_code = RESPONSE_OK
-            response.json = Mock(return_value={'refreshToken': 'test_refresh_token'})
-            result: RefreshTokenFetchOutput = self.refresh_token_fetcher.fetch()
+            response.json = Mock(return_value={'idToken': 'test_id_token'})
+            mock.return_value = response
+            result: IDTokenFetchOutput = self.id_token_fetcher.fetch()
 
             with self.subTest('response_code == 200'):
                 self.assertEqual(
@@ -44,5 +45,5 @@ class TestRefreshTokenFetcher(unittest.TestCase):
             with self.subTest('tokenの取得'):
                 self.assertEqual(
                     result.token,
-                    'test_refresh_token',
+                    'test_id_token',
                 )
