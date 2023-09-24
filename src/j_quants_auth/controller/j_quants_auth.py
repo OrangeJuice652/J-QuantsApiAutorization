@@ -1,11 +1,10 @@
-from typing import Any
-from usecase import (
+from ..usecase import (
   IRefreshTokenFetcher,
   IIDTokenFetcher,
   RefreshTokenFetchOutput,
   IDTokenFetchOutput,
 )
-from constants import RESPONSE_OK
+from ..constants import RESPONSE_OK
 
 class JQuantsApiIDTokenController():
   refresh_token_fetcher: IRefreshTokenFetcher

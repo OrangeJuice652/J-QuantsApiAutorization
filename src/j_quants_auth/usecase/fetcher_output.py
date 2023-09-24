@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 import requests
-from constants import RESPONSE_OK
+from ..constants import RESPONSE_OK
 
 class BaseTokenFetcherOutput(ABC):
     response_code: str

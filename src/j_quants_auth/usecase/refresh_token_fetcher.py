@@ -1,8 +1,8 @@
 from abc import ABC, abstractmethod
 import requests
 import json
-from constants import JQUANTS_API_URI, REFRESH_TOKEN_URL
-from usecase import RefreshTokenFetchOutput
+from ..constants import JQUANTS_API_URI, REFRESH_TOKEN_URL
+from .fetcher_output import RefreshTokenFetchOutput
 
 
 class IRefreshTokenFetcher(ABC):
