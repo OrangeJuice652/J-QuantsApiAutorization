@@ -1,6 +1,6 @@
 import unittest
-from j_quants import JQuantsApiIDTokenController
-from j_quants.usecase import IIDTokenFetcher, IRefreshTokenFetcher
+from j_quants_auth import JQuantsApiIDTokenController
+from j_quants_auth.usecase import IIDTokenFetcher, IRefreshTokenFetcher
 
 class MockIDTokenFetcher(IIDTokenFetcher):
     pass
