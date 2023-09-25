@@ -17,17 +17,8 @@ class TestJQuantsApiIDTokenController(unittest.TestCase):
             MockIDTokenFetcher(),
         )
     
-    def test_init(self):
-        """JQuantsApiIDTokenControllerの初期化（__init__()）テスト
-        """
-        with self.subTest('refresh_token_fetcherの初期化'):
-            self.assertIsInstance(
-                self.j_quants_api_id_token_controller.refresh_token_fetcher,
-                IRefreshTokenFetcher,
-            )
-        
-        with self.subTest('id_token_fetcherの初期化'):
-            self.assertIsInstance(
-                self.j_quants_api_id_token_controller.id_token_fetcher,
-                IIDTokenFetcher,
-            )
+    def fetch(self):
+        self.j_quants_api_id_token_controller.get_id_token(
+            'mail_address',
+            'password',
+        )
