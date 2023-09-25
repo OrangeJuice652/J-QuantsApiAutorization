@@ -6,27 +6,17 @@ from .fetcher_output import IDTokenFetchOutput
 
 class IIDTokenFetcher(ABC):
     @abstractmethod
-    def __init__(
-        self,
-        refresh_token: Optional[str] = None,
-    ):
-        pass
-
-    @abstractmethod
     def fetch() -> IDTokenFetchOutput:
         pass
 
 
 class IDTokenFetcher():
-    def __init__(
+    def fetch(
         self,
-        refresh_token: Optional[str] = None,
-    ):
-        self.refresh_token = refresh_token
-
-    def fetch(self) -> IDTokenFetchOutput:
+        refresh_token: str,
+    ) -> IDTokenFetchOutput:
         query_parameters = {
-            'refreshtoken': self.refresh_token,
+            'refreshtoken': refresh_token,
         }
         response: requests.Response = requests.post(
             JQUANTS_API_URI+ID_TOKEN_URL,

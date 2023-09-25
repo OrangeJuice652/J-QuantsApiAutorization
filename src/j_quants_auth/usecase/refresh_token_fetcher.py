@@ -6,37 +6,19 @@ from .fetcher_output import RefreshTokenFetchOutput
 
 
 class IRefreshTokenFetcher(ABC):
-    mail_address: str
-    password: str
-
-    @abstractmethod
-    def __init__(
-        self,
-        mail_address: str,
-        password: str,
-    ):
-        pass
-
     @abstractmethod
     def fetch(self) -> RefreshTokenFetchOutput:
         pass
 
 class RefreshTokenFetcher(IRefreshTokenFetcher):
-    mail_address: str
-    password: str
-
-    def __init__(
+    def fetch(
         self,
-        mail_address: str = '',
-        password: str = '',
-    ):
-        self.mail_address = mail_address
-        self.password = password
-
-    def fetch(self) -> RefreshTokenFetchOutput:
+        mail_address: str,
+        password: str,
+    ) -> RefreshTokenFetchOutput:
         request_body = {
-            'mailaddress': self.mail_address,
-            'password': self.password,
+            'mailaddress': mail_address,
+            'password': password,
         }
         response: requests.Response = requests.post(
             JQUANTS_API_URI+REFRESH_TOKEN_URL,

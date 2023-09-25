@@ -1,3 +1,5 @@
+# TODO: IRefreshTokenFetcherに、属性を持たせないようにする。
+
 from ..usecase import (
   IRefreshTokenFetcher,
   IIDTokenFetcher,
@@ -18,24 +20,22 @@ class JQuantsApiIDTokenController():
 
       self.refresh_token_fetcher: IRefreshTokenFetcher = refresh_token_fetcher
       self.id_token_fetcher: IIDTokenFetcher = id_token_fetcher
-  
-  def __call__(self,  mail_address, password):
-     self.refresh_token_fetcher.mail_address = mail_address
-     self.refresh_token_fetcher.password = password
-     return self
 
-  def get_id_token(self):
-    if self.id_token_fetcher.refresh_token is None:
-        # TODO: id_token_fetcher側に、refresh_tokenの定義がないのでつける
-        # refresh_tokenをまだ所持していない場合
-      refresh_token_fetcher_output: RefreshTokenFetchOutput = self.refresh_token_fetcher.fetch()
+  def get_id_token(
+      self,
+      mail_address: str,
+      password: str,
+  ):
+    refresh_token_fetcher_output: RefreshTokenFetchOutput = self.refresh_token_fetcher.fetch(
+       mail_address,
+       password,
+    )
 
     if refresh_token_fetcher_output.response_code == RESPONSE_OK:
-        # TODO: id_token_fetcher.refresh_tokenは、fetch()内で、初期化したい
-        self.id_token_fetcher.refresh_token = refresh_token_fetcher_output.token
-        # TODO: リフレッシュトークンが取得できなかった（response_code != RESPONSE_OK）のエラー処理
-
-    id_token_fetcher_output: IDTokenFetchOutput = self.id_token_fetcher.fetch()
+      # TODO: リフレッシュトークンが取得できなかった（response_code != RESPONSE_OK）のエラー処理
+      id_token_fetcher_output: IDTokenFetchOutput = self.id_token_fetcher.fetch(
+        refresh_token_fetcher_output.token
+      )
     if id_token_fetcher_output.response_code == RESPONSE_OK:
-        return id_token_fetcher_output.token
-        # TODO: IDトークンが取得できなかった（response_code != RESPONSE_OK）のエラー処理
+      # TODO: IDトークンが取得できなかった（response_code != RESPONSE_OK）のエラー処理
+      return id_token_fetcher_output.token
