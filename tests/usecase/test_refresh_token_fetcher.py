@@ -5,26 +5,7 @@ from j_quants_auth.constants import RESPONSE_OK
 
 class TestRefreshTokenFetcher(unittest.TestCase):
     def setUp(self):
-        self.refresh_token_fetcher = RefreshTokenFetcher(
-            mail_address='test_address',
-            password='password'
-        )
-
-    def test_init(self):
-        """RefreshTokenFetcherの初期化テスト
-        """
-
-        with self.subTest('アドレスの初期化'):
-            self.assertEqual(
-                self.refresh_token_fetcher.mail_address,
-                'test_address',
-            )
-        
-        with self.subTest('パスワードの初期化'):
-            self.assertEqual(
-                self.refresh_token_fetcher.mail_address,
-                'password'
-            )
+        self.refresh_token_fetcher = RefreshTokenFetcher()
     
     def test_fetch_200(self):
         """fetch()のテスト(response_code == 200の場合)
@@ -32,9 +13,12 @@ class TestRefreshTokenFetcher(unittest.TestCase):
         with patch('requests.post') as mock:
             response = requests.models.Response()
             response.status_code = RESPONSE_OK
-            response.json = Mock(return_value={'refreshToken': 'test_refresh_token'})
+            response.json = Mock(return_value={'refreshToken': 'refresh_token'})
             mock.return_value = response
-            result: RefreshTokenFetchOutput = self.refresh_token_fetcher.fetch()
+            result: RefreshTokenFetchOutput = self.refresh_token_fetcher.fetch(
+                'mail_address',
+                'password',
+            )
 
             with self.subTest('response_code == 200'):
                 self.assertEqual(
@@ -45,5 +29,5 @@ class TestRefreshTokenFetcher(unittest.TestCase):
             with self.subTest('tokenの取得'):
                 self.assertEqual(
                     result.token,
-                    'test_refresh_token',
+                    'refresh_token',
                 )
