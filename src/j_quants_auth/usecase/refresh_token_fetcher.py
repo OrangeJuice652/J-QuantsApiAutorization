@@ -7,7 +7,10 @@ from .fetcher_output import RefreshTokenFetchOutput
 
 class IRefreshTokenFetcher(ABC):
     @abstractmethod
-    def fetch(self) -> RefreshTokenFetchOutput:
+    def fetch(self,
+        mail_address: str,
+        password: str,
+    ) -> RefreshTokenFetchOutput:
         pass
 
 class RefreshTokenFetcher(IRefreshTokenFetcher):
