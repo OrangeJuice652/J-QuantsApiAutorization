@@ -12,13 +12,20 @@ class MockRefreshTokenFetcher(IRefreshTokenFetcher):
 
 class TestJQuantsApiIDTokenController(unittest.TestCase):
     def setUp(self):
-        self.j_quants_api_id_token_controller = JQuantsApiIDTokenController(
+        pass
+    
+    def test_fetch_200(self):
+        mock_refresh_token_fetcher = MockRefreshTokenFetcher()
+        mock_refresh_token_output = MockRefreshTokenOutput(RESPONSE_200, 'test_refresh_token')
+        mock_refresh_token.fetch = Mock(result_value=mock_refresh_token)
+
+        mock_id_token_fetcher = MockIDTokenFetcher()
+        mock_id_token_output = MockIDTokenOutput(RESPONSE_200, 'test_id_token')
+        mock_id_token.fetch = Mock(result_value=mock_id_token)
+        
+        j_quants_api_id_token_controller = JQuantsApiIDTokenController(
             MockRefreshTokenFetcher(),
             MockIDTokenFetcher(),
         )
-    
-    def fetch(self):
-        self.j_quants_api_id_token_controller.get_id_token(
-            'mail_address',
-            'password',
-        )
+        test_id_token = j_quants_api_id_token_controller.get_id_token
+        self.assertEqual(test_id_token, 'tests_id_token')
