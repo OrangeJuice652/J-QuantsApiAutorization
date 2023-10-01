@@ -5,6 +5,8 @@ from ..usecase import (
   IIDTokenFetcher,
   RefreshTokenFetchOutput,
   IDTokenFetchOutput,
+  RefreshTokenException,
+  IDTokenFetcherException,
 )
 from ..constants import RESPONSE_OK
 
@@ -36,6 +38,16 @@ class JQuantsApiIDTokenController():
       id_token_fetcher_output: IDTokenFetchOutput = self.id_token_fetcher.fetch(
         refresh_token_fetcher_output.token
       )
+    else:
+      raise RefreshTokenException(
+        refresh_token_fetcher_output.response_code,
+        refresh_token_fetcher_output.error_message,
+      )
     if id_token_fetcher_output.response_code == RESPONSE_OK:
       # TODO: IDトークンが取得できなかった（response_code != RESPONSE_OK）のエラー処理
       return id_token_fetcher_output.token
+    else:
+      raise IDTokenFetcherException(
+        id_token_fetcher_output.response_code,
+        id_token_fetcher_output.error_message,
+      )
