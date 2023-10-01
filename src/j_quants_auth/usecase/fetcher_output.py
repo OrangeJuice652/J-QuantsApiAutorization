@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 import requests
+from typing import Optional
 from ..constants import RESPONSE_OK
 
 class BaseTokenFetcherOutput(ABC):
@@ -17,14 +18,14 @@ class BaseTokenFetcherOutput(ABC):
             self.token = self._get_token_from_json(response_json)
 
     @abstractmethod
-    def _get_token_from_json(self, response_json: requests.Response):
+    def _get_token_from_json(self, response_json: requests.Response) -> Optional[str]:
         pass
 
 class RefreshTokenFetchOutput(BaseTokenFetcherOutput):
-    def _get_token_from_json(self, response_json: requests.Response):
-        return response_json['refreshToken']
+    def _get_token_from_json(self, response_json: requests.Response) -> Optional[str]:
+        return response_json.get('refreshToken', None)
 
 
 class IDTokenFetchOutput(BaseTokenFetcherOutput):
-    def _get_token_from_json(self, response_json: requests.Response):
-        return response_json['idToken']
+    def _get_token_from_json(self, response_json: requests.Response) -> Optional[str]:
+        return response_json.get('idToken', None)

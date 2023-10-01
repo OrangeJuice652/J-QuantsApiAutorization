@@ -1,7 +1,7 @@
 import requests, unittest
 from unittest.mock import patch, Mock
-from j_quants_auth.usecase import IDTokenFetcher, IDTokenFetchOutput
-from j_quants_auth.constants import RESPONSE_OK
+from src.j_quants_auth.usecase import IDTokenFetcher, IDTokenFetchOutput
+from src.j_quants_auth.constants import RESPONSE_OK
 
 class TestIDTokenFetcher(unittest.TestCase):
     def setUp(self):
