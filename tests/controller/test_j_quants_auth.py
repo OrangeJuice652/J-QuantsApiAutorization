@@ -44,7 +44,7 @@ class TestJQuantsApiIDTokenController(unittest.TestCase):
             mock_refresh_token_fetcher,
             mock_id_token_fetcher,
         )
-        test_id_token = j_quants_api_id_token_controller.get_id_token('', '')
+        test_id_token = j_quants_api_id_token_controller.id_token
         self.assertEqual(test_id_token, 'test_id_token')
     
     def test_fetch_raise_exception(self):
@@ -80,7 +80,7 @@ class TestJQuantsApiIDTokenController(unittest.TestCase):
                     mock_refresh_token_fetcher,
                     mock_id_token_fetcher,
                 )
-                j_quants_api_id_token_controller.get_id_token('', '')
+                j_quants_api_id_token_controller.id_token
         
         with self.subTest('パターン2'):
             with self.assertRaises(IDTokenFetcherException):
@@ -106,4 +106,4 @@ class TestJQuantsApiIDTokenController(unittest.TestCase):
                     mock_refresh_token_fetcher,
                     mock_id_token_fetcher,
                 )
-                j_quants_api_id_token_controller.get_id_token('', '')
+                j_quants_api_id_token_controller.id_token
