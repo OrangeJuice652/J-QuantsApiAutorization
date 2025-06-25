@@ -17,7 +17,7 @@ class APIResponseException(IAPIResponseException):
         self.response_message = response_message
     
     def __str__(self):
-        f'{self.api_verbose_name}の呼び出しに失敗しました。\
+        return f'{self.api_verbose_name}の呼び出しに失敗しました。\
         (response_code: {self.response_code} \
         response_message: {self.response_message})'
 
