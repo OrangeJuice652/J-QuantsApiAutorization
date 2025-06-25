@@ -1,12 +1,11 @@
 from abc import ABC, abstractmethod
 import requests
-from typing import Optional
 from ..constants import JQUANTS_API_URI, ID_TOKEN_URL
 from .fetcher_output import IDTokenFetchOutput
 
 class IIDTokenFetcher(ABC):
     @abstractmethod
-    def fetch() -> IDTokenFetchOutput:
+    def fetch(self, refresh_token: str) -> IDTokenFetchOutput:
         pass
 
 
