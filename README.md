@@ -1,5 +1,5 @@
-# J-QuantsApiAutorization
-J-Quants APIから、IDトークンを取得するクライアント処理
+# j-quants-api-client
+[J-Quants API](https://jpx-jquants.com/?lang=ja)から、IDトークンを取得するクライアント処理
 
 ## 使い方
 
